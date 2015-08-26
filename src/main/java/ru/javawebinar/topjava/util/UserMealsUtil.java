@@ -36,15 +36,17 @@ public class UserMealsUtil {
 
         List<UserMealWithExceed> result = new LinkedList();
 
+        // создаем Map по дням
         Map<LocalDate, List<UserMeal>> mapByDate = mealList.stream()
                 .collect(Collectors.groupingBy(u -> u.getDateTime().toLocalDate()
                 ));
-
+        // перебираем дни
         for (Map.Entry m : mapByDate.entrySet()) {
-
+            // проверяем был перебор по каллориям или нет
             boolean exceed = ((List<UserMeal>) m.getValue()).stream()
                     .collect(Collectors.summarizingInt(UserMeal::getCalories))
                     .getSum() > caloriesPerDay;
+            // если находим записи с требуемым временем то добавляем к результурующий лист
             for (UserMeal meal : ((List<UserMeal>) m.getValue()).stream()
                                   .filter(u->(u.getDateTime().toLocalTime().isAfter(startTime)
                                            && u.getDateTime().toLocalTime().isBefore(endTime)))
