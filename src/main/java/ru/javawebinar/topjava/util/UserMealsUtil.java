@@ -45,10 +45,15 @@ public class UserMealsUtil {
             boolean exceed = ((List<UserMeal>) m.getValue()).stream()
                     .collect(Collectors.summarizingInt(UserMeal::getCalories))
                     .getSum() > caloriesPerDay;
-            for (UserMeal meal : ((List<UserMeal>) m.getValue())) {
+            for (UserMeal meal : ((List<UserMeal>) m.getValue()).stream()
+                                  .filter(u->(u.getDateTime().toLocalTime().isAfter(startTime)
+                                           && u.getDateTime().toLocalTime().isBefore(endTime)))
+                                  .collect(Collectors.toList())  ) {
+
                 result.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceed));
             }
         }
+
         return result;
     }
 }
