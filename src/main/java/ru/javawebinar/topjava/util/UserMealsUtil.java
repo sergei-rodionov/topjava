@@ -46,7 +46,7 @@ public class UserMealsUtil {
             boolean exceed = ((List<UserMeal>) m.getValue()).stream()
                     .collect(Collectors.summarizingInt(UserMeal::getCalories))
                     .getSum() > caloriesPerDay;
-            // если находим записи с требуемым временем то добавляем к результурующий лист
+            // если находим записи с требуемым временем то добавляем в результурующий лист
             for (UserMeal meal : ((List<UserMeal>) m.getValue()).stream()
                                   .filter(u->(u.getDateTime().toLocalTime().isAfter(startTime)
                                            && u.getDateTime().toLocalTime().isBefore(endTime)))
