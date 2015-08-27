@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,29 +31,21 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed> getFilteredMealsWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
-        List<UserMealWithExceed> result = new LinkedList();
-
-
-        mealList.stream()
+        return  mealList.stream()
                 // создаем Map по дням
                 .collect(Collectors.groupingBy(u -> u.getDateTime().toLocalDate())).entrySet().stream()
-
                 // перебираем дни
-                .forEach(days -> {
-
-                    // если находим записи с требуемым временем то добавляем в результурующий лист
-                    days.getValue().stream()
-                            .filter(timeMeal ->
-                                    // вычисляем был перебор по каллориям или нет
-                                    (days.getValue().stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay)
-                                    && (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
-                                    && timeMeal.getDateTime().toLocalTime().isBefore(endTime))
-                            )
-                            .forEach(meal ->
-                                    result.add(new UserMealWithExceed(meal.getDateTime(),
-                                            meal.getDescription(), meal.getCalories(), true)));
-                });
-
-        return result;
+                .flatMap(days -> days.getValue().stream()
+                        .filter(timeMeal ->
+                               // вычисляем был перебор по каллориям или нет
+                               (days.getValue().stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay)
+                               // если находим записи с требуемым временем то добавляем в результурующий лист
+                               && (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
+                               && timeMeal.getDateTime().toLocalTime().isBefore(endTime)))
+                        // создаем нужный объект
+                        .map(meal -> new UserMealWithExceed(meal.getDateTime(),
+                                                            meal.getDescription(),
+                                                            meal.getCalories(), true))
+                ).collect(Collectors.toList());
     }
 }
