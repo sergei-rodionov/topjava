@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 public class UserMealsUtil {
     public static void main(String[] args) {
         List<UserMeal> mealList = Arrays.asList(
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
+                new UserMeal(LocalDateTime.of(2015, Month.MAY, 29, 10, 0), "Завтрак", 1500),
+                new UserMeal(LocalDateTime.of(2015, Month.MAY, 29, 13, 0), "Обед", 500),
+                new UserMeal(LocalDateTime.of(2015, Month.MAY, 29, 20, 0), "Ужин", 500),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 500),
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500)
@@ -42,17 +42,17 @@ public class UserMealsUtil {
                 // перебираем дни
                 .forEach(days -> {
 
-                    // вычисляем один раз был перебор по каллориям или нет
-                    boolean exceed = days.getValue().stream()
-                            .collect(Collectors.summarizingInt(UserMeal::getCalories)).getSum() > caloriesPerDay;
-
                     // если находим записи с требуемым временем то добавляем в результурующий лист
                     days.getValue().stream()
-                            .filter(timeMeal -> (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
-                                    && timeMeal.getDateTime().toLocalTime().isBefore(endTime)))
+                            .filter(timeMeal ->
+                                    // вычисляем был перебор по каллориям или нет
+                                    (days.getValue().stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay)
+                                    && (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
+                                    && timeMeal.getDateTime().toLocalTime().isBefore(endTime))
+                            )
                             .forEach(meal ->
                                     result.add(new UserMealWithExceed(meal.getDateTime(),
-                                            meal.getDescription(), meal.getCalories(), exceed)));
+                                            meal.getDescription(), meal.getCalories(), true)));
                 });
 
         return result;
