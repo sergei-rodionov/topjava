@@ -39,16 +39,16 @@ public class UserMealsUtil {
         return  mealList.stream()
                 // создаем Map по дням
                 .collect(Collectors.groupingBy(u -> u.getDateTime().toLocalDate())).entrySet().stream()
-                // перебираем дни
-                // вычисляем был перебор по каллориям или нет
+                // вычисляем был перебор по каллориям за день или нет
                 .filter(t -> t.getValue().stream().mapToInt(UserMeal::getCalories).sum() > caloriesPerDay)
+                // перебираем оствшиеся дни после фильта
                 .flatMap(days -> days.getValue().stream()
-                       .filter(timeMeal ->
-                       // если находим записи с требуемым временем то добавляем в результурующий лист
-                            (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
-                            && timeMeal.getDateTime().toLocalTime().isBefore(endTime)))
-                            // создаем нужный объект
-                            .map(meal -> new UserMealWithExceed(meal.getDateTime(),
+                      .filter(timeMeal ->
+                               // если находим записи с требуемым временем то добавляем в результурующий лист
+                               (timeMeal.getDateTime().toLocalTime().isAfter(startTime)
+                             && timeMeal.getDateTime().toLocalTime().isBefore(endTime)))
+                                // создаем нужный объект
+                      .map(meal -> new UserMealWithExceed(meal.getDateTime(),
                                         meal.getDescription(),
                                         meal.getCalories(), true))
                 ).collect(Collectors.toList());
