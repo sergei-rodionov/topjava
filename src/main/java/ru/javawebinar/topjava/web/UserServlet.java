@@ -24,14 +24,16 @@ public class UserServlet extends HttpServlet {
     private UserMealDao dao = new UserMealDaoImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOG.debug("forward to userList");
 
+        request.setCharacterEncoding("UTF-8");
         if (request.getServletPath().equals("/add")) {
+            LOG.debug("add new record");
             request.getRequestDispatcher("/addUserMeal.jsp").forward(request, response);
             return;
         }
 
         if (request.getServletPath().equals("/edit")) {
+            LOG.debug("edit record");
             request.setAttribute("userMeal", dao.getUserMeal(request.getParameter("date")));
             request.getRequestDispatcher("/addUserMeal.jsp").forward(request, response);
             return;
@@ -43,21 +45,19 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("message", "Delete record ok.");
         }
 
+        LOG.debug("forward to userList");
         request.setAttribute("userMeal", dao.findAll());
         request.setCharacterEncoding("UTF-8");
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/userList.jsp");
         rd.forward(request, response);
-        //response.sendRedirect("userList.jsp");
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("post userList");
-
+        request.setCharacterEncoding("UTF-8");
         if (request.getParameterMap() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("datetime"), formatter);
             UserMeal meal = new UserMeal(dateTime,
                     request.getParameter("description"),
@@ -72,7 +72,5 @@ public class UserServlet extends HttpServlet {
         }
         // REDIRECT
         response.sendRedirect("users");
-
-
     }
 }

@@ -31,7 +31,7 @@ public class UserMeal {
         return calories;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "UserMeal{" +
                 "dateTime=" + dateTime +

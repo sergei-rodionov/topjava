@@ -26,7 +26,6 @@ public class UserMealDaoImpl implements UserMealDao {
     @Override
     public void delete(String dateRecord) {
         userMealList.removeAll(userMealList.stream().filter(t -> t.getDateTime().equals(LocalDateTime.parse(dateRecord))).collect(Collectors.toList()));
-        //userMealList.remove(userMeal);
     }
 
     @Override
