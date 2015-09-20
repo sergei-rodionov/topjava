@@ -16,4 +16,10 @@ public interface UserMealRepository {
     UserMeal get(int id);
 
     Collection<UserMeal> getAll();
+
+    Collection<UserMeal> getByFilter(int userId, String textSearch);
+
+    Collection<UserMeal> getByFilter(int userId);
+
+    Collection<UserMeal> getByFilter(String textSearch);
 }
