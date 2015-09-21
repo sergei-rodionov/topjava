@@ -1,7 +1,9 @@
 package ru.javawebinar.topjava.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.Role;
@@ -26,10 +28,15 @@ import java.util.Objects;
  * User: gkislin
  * Date: 19.08.2014
  */
+
+@Component
 public class MealServlet extends HttpServlet {
     private static final LoggerWrapper LOG = LoggerWrapper.get(MealServlet.class);
 
-    private UserMealRepository repository;
+    private UserMealRepository repository; // not use
+    @Autowired
+    private AdminRestController adminUserController;
+    @Autowired
     private UserMealRestController restController;
 
     @Override
@@ -38,15 +45,21 @@ public class MealServlet extends HttpServlet {
         repository = new InMemoryUserMealRepository();
 
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-            AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
+            adminUserController = appCtx.getBean(AdminRestController.class);
             System.out.println(adminUserController.create(new User(1, "userName", "email", "password", Role.ROLE_ADMIN)));
             System.out.println(adminUserController.create(new User(2, "userName2", "email", "password", Role.ROLE_USER)));
-            restController = appCtx.getBean(UserMealRestController.class);
+            //    restController = appCtx.getBean(UserMealRestController.class);
+            appCtx.getAutowireCapableBeanFactory().autowireBean(this);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        if (request.getParameter("filter")!=null) {
+            LOG.info("filter list");
+            doGet(request,response);
+            return;
+        }
         String id = request.getParameter("id");
         UserMeal userMeal = new UserMeal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
@@ -69,7 +82,11 @@ public class MealServlet extends HttpServlet {
             LOG.info("getAll");
 //            request.setAttribute("mealList",
 //                    UserMealsUtil.getWithExceeded(repository.getAll(), 2000));
+            if (request.getParameter("filter")!=null) {
+                LoggedUser.setId(Integer.parseInt(request.getParameter("user")));
+            }
             request.setAttribute("mealList", UserMealsUtil.getWithExceeded(restController.getAll(), 2000));
+            request.setAttribute("userList", adminUserController.getAll());
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             int id = getId(request);
@@ -81,7 +98,7 @@ public class MealServlet extends HttpServlet {
             final UserMeal meal = action.equals("create") ?
                     new UserMeal(LocalDateTime.now(), "", 1000, LoggedUser.id()) :
                     restController.get(getId(request));
-                    //repository.get(getId(request));
+            //repository.get(getId(request));
             request.setAttribute("meal", meal);
             request.getRequestDispatcher("mealEdit.jsp").forward(request, response);
         }

@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.repository;
 
 import ru.javawebinar.topjava.model.UserMeal;
 
+import java.time.LocalTime;
 import java.util.Collection;
 
 /**
@@ -17,9 +18,11 @@ public interface UserMealRepository {
 
     Collection<UserMeal> getAll();
 
-    Collection<UserMeal> getByFilter(int userId, String textSearch);
-
     Collection<UserMeal> getByFilter(int userId);
 
-    Collection<UserMeal> getByFilter(String textSearch);
+    Collection<UserMeal> getByFilter(LocalTime startTime, LocalTime endTime);
+
+    Collection<UserMeal> getByFilter(int userId, LocalTime startTime, LocalTime endTime);
+
+
 }

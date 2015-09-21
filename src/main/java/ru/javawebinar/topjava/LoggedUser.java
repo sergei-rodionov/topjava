@@ -2,24 +2,23 @@ package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Role;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * GKislin
  * 06.03.2015.
  */
 public class LoggedUser {
 
+    private static int id=1;
+
     public static int id() {
-        return 2;
+        return id;
     }
 
-    public static Set<Role> role() {
-        return new HashSet<Role>(Arrays.asList(
-        //        Role.ROLE_ADMIN,
-                Role.ROLE_USER
-        ));
+    public static void setId(int id) {
+        LoggedUser.id = id;
+    }
+
+    public static Role role() {
+        return (id==1) ? Role.ROLE_ADMIN : Role.ROLE_USER ;
     }
 }

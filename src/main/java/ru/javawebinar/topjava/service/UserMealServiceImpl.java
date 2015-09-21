@@ -8,7 +8,6 @@ import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -45,7 +44,7 @@ public class UserMealServiceImpl implements UserMealService {
 
     @Override
     public Collection<UserMeal> getByUser(int userId) {
-        return repository.getAll().stream().filter(u-> u.getUserId()==userId).collect(Collectors.toList());
+        return repository.getByFilter(userId);
     }
 
     @Override

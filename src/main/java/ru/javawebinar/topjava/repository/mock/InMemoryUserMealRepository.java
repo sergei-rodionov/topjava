@@ -5,11 +5,13 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -59,17 +61,15 @@ public class InMemoryUserMealRepository implements UserMealRepository {
     }
 
     @Override
-    public Collection<UserMeal> getByFilter(int userId, String textSearch) {
-        return null;
-    }
-
-    @Override
     public Collection<UserMeal> getByFilter(int userId) {
-        return null;
+        return repository.values().stream().filter(u-> u.getUserId()==userId).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<UserMeal> getByFilter(String textSearch) {
+    public Collection<UserMeal> getByFilter(LocalTime startTime, LocalTime endTime) { return null; }
+
+    @Override
+    public Collection<UserMeal> getByFilter(int userId, LocalTime startTime, LocalTime endTime) {
         return null;
     }
 }

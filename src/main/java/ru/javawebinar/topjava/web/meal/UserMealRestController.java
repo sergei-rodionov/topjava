@@ -9,7 +9,6 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.service.UserMealServiceImpl;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * GKislin
@@ -19,25 +18,21 @@ import java.util.Set;
 public class UserMealRestController {
     protected final LoggerWrapper LOG = LoggerWrapper.get(getClass());
 
-    private final int LOGGED_USER_ID = LoggedUser.id();
-    private final Set<Role> LOGGED_USER_ROLES = LoggedUser.role();
-
-
     @Autowired
     private UserMealServiceImpl service;
 
     public Collection<UserMeal> getAll() {
         LOG.info("getAll");
-        if (LOGGED_USER_ROLES.contains(Role.ROLE_ADMIN)) {
+        if (LoggedUser.role().equals(Role.ROLE_ADMIN)) {
             return service.getAll();
         } else {
-            return service.getByUser(LOGGED_USER_ID);
+            return service.getByUser(LoggedUser.id());
         }
     }
 
     public UserMeal get(int id) {
         LOG.info("get " + id);
-        return service.get(id, LOGGED_USER_ID);
+        return service.get(id, LoggedUser.id());
     }
 
     public UserMeal create(UserMeal userMeal) {
@@ -48,12 +43,12 @@ public class UserMealRestController {
 
     public void delete(int id) {
         LOG.info("delete " + id);
-        service.delete(id, LOGGED_USER_ID);
+        service.delete(id, LoggedUser.id());
     }
 
     public void update(UserMeal userMeal, int id) {
         userMeal.setId(id);
         LOG.info("update " + userMeal);
-        service.update(userMeal, LOGGED_USER_ID);
+        service.update(userMeal, LoggedUser.id());
     }
 }
