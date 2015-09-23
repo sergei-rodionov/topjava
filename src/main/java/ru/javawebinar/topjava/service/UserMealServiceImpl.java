@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 /**
@@ -26,14 +27,14 @@ public class UserMealServiceImpl implements UserMealService {
 
     @Override
     public void delete(int id, int userId) throws NotFoundException {
-        ExceptionUtil.check(repository.get(id).getUserId()==userId, id);
+        ExceptionUtil.check(repository.get(id).getUserId() == userId, id);
         repository.delete(id);
     }
 
     @Override
     public UserMeal get(int id, int userId) throws NotFoundException {
         UserMeal userMeal = repository.get(id);
-        ExceptionUtil.check(userMeal.getUserId()==userId, id);
+        ExceptionUtil.check(userMeal.getUserId() == userId, id);
         return userMeal;
     }
 
@@ -43,13 +44,19 @@ public class UserMealServiceImpl implements UserMealService {
     }
 
     @Override
-    public Collection<UserMeal> getByUser(int userId) {
+    public Collection<UserMeal> getByFilter(int userId) {
         return repository.getByFilter(userId);
     }
 
     @Override
+    public Collection<UserMeal> getByFilter(int userId, LocalDate startDate, LocalDate endDate) {
+        return repository.getByFilter(userId, startDate, endDate);
+    }
+
+    @Override
     public void update(UserMeal userMeal, int userId) {
-        get(userMeal.getId(), userId); // check for user record
-        repository.save(userMeal);
+        //get(userMeal.getId(), userId); // check for user record
+        //repository.save(userMeal);
+        ExceptionUtil.check(repository.save(userMeal), "");
     }
 }

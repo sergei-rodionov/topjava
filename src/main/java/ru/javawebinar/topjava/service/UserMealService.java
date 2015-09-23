@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.service;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 /**
@@ -19,8 +20,11 @@ public interface UserMealService {
 
     Collection<UserMeal> getAll();
 
-    Collection<UserMeal> getByUser(int userId);
-
     void update(UserMeal userMeal, int userId);
+
+    Collection<UserMeal> getByFilter(int userId);
+
+    Collection<UserMeal> getByFilter(int userId, LocalDate startDate, LocalDate endDate);
+
 
 }

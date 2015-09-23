@@ -21,7 +21,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -55,9 +58,9 @@ public class MealServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        if (request.getParameter("filter")!=null) {
+        if (request.getParameter("filter") != null) {
             LOG.info("filter list");
-            doGet(request,response);
+            doGet(request, response);
             return;
         }
         String id = request.getParameter("id");
@@ -82,10 +85,26 @@ public class MealServlet extends HttpServlet {
             LOG.info("getAll");
 //            request.setAttribute("mealList",
 //                    UserMealsUtil.getWithExceeded(repository.getAll(), 2000));
-            if (request.getParameter("filter")!=null) {
+            if (request.getParameter("filter") != null) {
                 LoggedUser.setId(Integer.parseInt(request.getParameter("user")));
-            }
-            request.setAttribute("mealList", UserMealsUtil.getWithExceeded(restController.getAll(), 2000));
+                if (!request.getParameter("startDate").isEmpty() ||
+                        !request.getParameter("startTime").isEmpty() ||
+                        !request.getParameter("endDate").isEmpty() ||
+                        !request.getParameter("endTime").isEmpty()
+                        ) {
+                    LocalTime startTime = LocalTime.parse(request.getParameter("startTime"));
+                    LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
+                    LocalTime endTime = LocalTime.parse(request.getParameter("endTime"));
+                    LocalDate endDate = LocalDate.parse(request.getParameter("endDate"));
+
+                    Collection collection = restController.getByFilter(
+                            LocalDateTime.of(startDate, startTime), LocalDateTime.of(endDate, endTime));
+                    request.setAttribute("mealList", collection);
+                } else
+                    request.setAttribute("mealList", UserMealsUtil.getWithExceeded(restController.getAll(), 2000));
+
+            } else
+                request.setAttribute("mealList", UserMealsUtil.getWithExceeded(restController.getAll(), 2000));
             request.setAttribute("userList", adminUserController.getAll());
             request.getRequestDispatcher("/mealList.jsp").forward(request, response);
         } else if (action.equals("delete")) {

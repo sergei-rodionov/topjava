@@ -23,7 +23,7 @@
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <form id="filter" charset="utf-8" class="form-horizontal" accept-charset="UTF-8" method="post">
-        <%--<div class="form-group">
+        <div class="form-group">
             <label class="col-sm-2">From Date</label>
             <div class="col-sm-2"><input id="startDate" name="startDate" placeholder="Start Date"
                                          class="form-control date-picker" type="text" value=""/></div>
@@ -38,7 +38,7 @@
             <label class="col-sm-2">To Time</label>
             <div class="col-sm-2"><input id="endTime" name="endTime" placeholder="End Time"
                                          class="form-control time-picker" type="text" value=""/></div>
-        </div>--%>
+        </div>
         <div class="form-group">
             <input type="hidden" name="filter" value="on">
             <label>Select user:</label>

@@ -6,9 +6,14 @@ import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.UserMeal;
+import ru.javawebinar.topjava.model.UserMealWithExceed;
 import ru.javawebinar.topjava.service.UserMealServiceImpl;
+import ru.javawebinar.topjava.util.UserMealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -26,7 +31,7 @@ public class UserMealRestController {
         if (LoggedUser.role().equals(Role.ROLE_ADMIN)) {
             return service.getAll();
         } else {
-            return service.getByUser(LoggedUser.id());
+            return service.getByFilter(LoggedUser.id());
         }
     }
 
@@ -35,8 +40,22 @@ public class UserMealRestController {
         return service.get(id, LoggedUser.id());
     }
 
+    public Collection getByFilter(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        Collection<UserMealWithExceed> withExceeded = UserMealsUtil.getWithExceeded(
+                getByFilter(LoggedUser.id(), startDateTime.toLocalDate(), endDateTime.toLocalDate()), 2000);
+
+        return withExceeded.stream().filter(u ->
+                        u.getDateTime().isAfter(startDateTime) &&
+                                u.getDateTime().isBefore(endDateTime)
+        ).collect(Collectors.toList());
+    }
+
+    private Collection<UserMeal> getByFilter(int userId, LocalDate startDateTime, LocalDate endDateTime) {
+        return service.getByFilter(userId, startDateTime, endDateTime);
+    }
+
     public UserMeal create(UserMeal userMeal) {
-        //    userMeal.setId(null);
+        //userMeal.setId(null);
         LOG.info("create " + userMeal);
         return service.save(userMeal);
     }

@@ -4,8 +4,8 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.Collection;
 import java.util.Map;
@@ -42,7 +42,12 @@ public class InMemoryUserMealRepository implements UserMealRepository {
         if (userMeal.isNew()) {
             userMeal.setId(counter.incrementAndGet());
         }
-        return repository.put(userMeal.getId(), userMeal);
+
+        if (repository.get(userMeal.getId()) == null || repository.get(userMeal.getId()).getUserId() == userMeal.getUserId()) {
+            return repository.put(userMeal.getId(), userMeal);
+        }
+
+        return null;
     }
 
     @Override
@@ -62,15 +67,14 @@ public class InMemoryUserMealRepository implements UserMealRepository {
 
     @Override
     public Collection<UserMeal> getByFilter(int userId) {
-        return repository.values().stream().filter(u-> u.getUserId()==userId).collect(Collectors.toList());
+        return repository.values().stream().filter(u -> u.getUserId() == userId).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<UserMeal> getByFilter(LocalTime startTime, LocalTime endTime) { return null; }
-
-    @Override
-    public Collection<UserMeal> getByFilter(int userId, LocalTime startTime, LocalTime endTime) {
-        return null;
+    public Collection<UserMeal> getByFilter(int userId, LocalDate startDate, LocalDate endDate) {
+        return getByFilter(userId).stream()
+                .filter(um -> um.getDateTime().isAfter(startDate.atStartOfDay()) && um.getDateTime().isBefore(endDate.plusDays(1).atStartOfDay()))
+                .collect(Collectors.toList());
     }
 }
 
