@@ -48,6 +48,18 @@ public class UserMeal extends BaseEntity {
         return id;
     }
 
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
     public boolean isNew() {
         return id == null;
     }
