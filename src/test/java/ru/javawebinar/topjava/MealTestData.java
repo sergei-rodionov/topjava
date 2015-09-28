@@ -37,13 +37,6 @@ public class MealTestData {
     );
 
     public static class TestUserMeal extends UserMeal {
-        public TestUserMeal(UserMeal um) {
-            this(um.getId(), um.getDateTime(), um.getDescription(), um.getCalories());
-        }
-
-        public TestUserMeal(LocalDateTime dateTime, String description, int calories) {
-            this(null, dateTime, description, calories);
-        }
 
         public TestUserMeal(Integer id, LocalDateTime dateTime, String description, int calories) {
             super(id, dateTime, description, calories);

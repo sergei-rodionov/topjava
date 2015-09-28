@@ -29,7 +29,8 @@ public class SpringAdminInMemoryTest {
     @Autowired
     private AdminRestController controller;
 
-    @Autowired
+
+    @Autowired(required = false)
     private UserRepository repository;
 
     @Before
