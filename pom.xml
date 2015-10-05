@@ -27,7 +27,7 @@
         <junit.version>4.12</junit.version>
 
         <!-- Hibernate -->
-        <hibernate.version>5.0.1.Final</hibernate.version>
+        <hibernate.version>5.0.2.Final</hibernate.version>
         <hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
     </properties>
 
@@ -130,6 +130,12 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+        <!-- for LocalDateTimeType -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
 
         <!--Test-->
