@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -37,9 +36,9 @@ public class UserMeal extends BaseEntity {
 
 
     // с зависимость hibernate-java8 можно не использовать кастомный конвертер
-    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    // @Type(type = "org.hibernate.type.LocalDateTimeType")
     // кастомный конвертер для LocalDateTime
-    //@Convert(converter = LocalDateTimePersistenceConverter.class)
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
     @Column(name = "date_time", nullable = false)
     protected LocalDateTime dateTime;
 

@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 public class MyUnitRule implements MethodRule {
 
     private static final ResourceDatabasePopulator POPULATOR = new ResourceDatabasePopulator();
-    private static DataSource dataSource;
 
     public MyUnitRule(String script) {
         POPULATOR.addScript(new ClassPathResource(script));
@@ -24,7 +23,7 @@ public class MyUnitRule implements MethodRule {
     @Override
     public Statement apply(final Statement base, final FrameworkMethod method, final Object target) {
 
-        dataSource = (DataSource) ((UserMealServiceTest) target).context.getBean("dataSource");
+        DataSource dataSource = (DataSource) ((UserMealServiceTest) target).context.getBean("dataSource");
 
         DatabasePopulatorUtils.execute(POPULATOR, dataSource);
 
