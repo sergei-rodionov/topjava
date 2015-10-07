@@ -12,11 +12,11 @@ import javax.sql.DataSource;
 /**
  * Created by SergeiRodionov.ru on 05.10.2015.
  */
-public class MyUnitRule implements MethodRule {
+public class MyDbInitRule implements MethodRule {
 
     private static final ResourceDatabasePopulator POPULATOR = new ResourceDatabasePopulator();
 
-    public MyUnitRule(String script) {
+    public MyDbInitRule(String script) {
         POPULATOR.addScript(new ClassPathResource(script));
     }
 

@@ -3,6 +3,8 @@ package ru.javawebinar.topjava.service;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -35,10 +37,13 @@ public class UserMealServiceTest {
     @Autowired
     protected ApplicationContext context;
 
-    @Rule
-    public MyUnitRule myUnitRule = new MyUnitRule("db/populateDB.sql");
+    @Rule // Init DB
+    public MethodRule myUnitRule = new MyDbInitRule("db/populateDB.sql");
 
-    @Rule
+    @Rule // Time watcher
+    public TestRule watcher = new MyTestWatcherRule();
+
+    @Rule // Exception check
     public ExpectedException exception = ExpectedException.none();
 
     @Test
