@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -37,7 +38,7 @@ public abstract class UserMealServiceTest {
 
     public UserMealServiceTest() {
         System.out.println("==================================================");
-        System.out.println("RUN TEST CLASS: "+this.getClass().getSimpleName());
+        System.out.println("RUN TEST CLASS: " + this.getClass().getSimpleName());
         System.out.println("==================================================");
     }
 
@@ -61,6 +62,11 @@ public abstract class UserMealServiceTest {
     @Autowired
     protected UserMealService service;
 
+    @Before
+    public void setUp() throws Exception {
+        service.evictCache();
+    }
+
     @Test
     public void testDelete() throws Exception {
         service.delete(MealTestData.MEAL1_ID, USER_ID);
@@ -83,6 +89,12 @@ public abstract class UserMealServiceTest {
     @Test
     public void testGet() throws Exception {
         UserMeal actual = service.get(ADMIN_MEAL_ID, ADMIN_ID);
+        MATCHER.assertEquals(ADMIN_MEAL, actual);
+    }
+
+    @Test
+    public void testGetFull() throws Exception {
+        UserMeal actual = service.getFull(ADMIN_MEAL_ID, ADMIN_ID);
         MATCHER.assertEquals(ADMIN_MEAL, actual);
     }
 

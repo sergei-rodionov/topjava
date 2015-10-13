@@ -71,6 +71,12 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
     }
 
     @Override
+    public UserMeal getFull(int id, int userId) {
+        Map<Integer, UserMeal> userMeals = repository.get(userId);
+        return userMeals == null ? null : userMeals.get(id);
+    }
+
+    @Override
     public Collection<UserMeal> getAll(int userId) {
         return repository.get(userId).values().stream().sorted(USER_MEAL_COMPARATOR).collect(Collectors.toList());
     }

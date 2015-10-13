@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.UserMeal;
@@ -24,6 +25,9 @@ public interface ProxyUserMealRepository extends JpaRepository<UserMeal, Integer
     List<UserMeal> findAllByUserIdOrderByDateTimeDesc(Integer userId);
 
     UserMeal findByIdAndUserId(Integer id, Integer UserId);
+
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH, attributePaths = "user")
+    UserMeal findOneByIdAndUserId(Integer id, Integer UserId);
 
 //    @Query("SELECT m from UserMeal m WHERE m.user.id=:userId " +
 //            "AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC")

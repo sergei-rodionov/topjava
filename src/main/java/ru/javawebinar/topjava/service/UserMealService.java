@@ -27,4 +27,8 @@ public interface UserMealService {
     UserMeal update(UserMeal meal, int userId);
 
     UserMeal save(UserMeal meal, int userId);
+
+    UserMeal getFull(int id, int userId);
+
+    void evictCache();
 }

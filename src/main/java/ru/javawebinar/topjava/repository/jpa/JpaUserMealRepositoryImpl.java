@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.repository.jpa;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +58,17 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
                 .getResultList();
         return DataAccessUtils.singleResult(userMeals);
     }
+
+    @Override
+    @Fetch(FetchMode.JOIN) // FetchType.EAGY
+    public UserMeal getFull(int id, int userId) {
+        List<UserMeal> userMeals = em.createNamedQuery(UserMeal.GET_FULL, UserMeal.class)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .getResultList();
+        return DataAccessUtils.singleResult(userMeals);
+    }
+
 
     @Override
     public List<UserMeal> getAll(int userId) {

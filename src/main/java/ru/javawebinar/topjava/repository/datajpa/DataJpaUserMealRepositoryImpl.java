@@ -47,6 +47,12 @@ public class DataJpaUserMealRepositoryImpl implements UserMealRepository {
     }
 
     @Override
+    public UserMeal getFull(int id, int userId) {
+        return proxy.findOneByIdAndUserId(id, userId);
+    }
+
+
+    @Override
     public List<UserMeal> getAll(int userId) {
         return proxy.findAllByUserIdOrderByDateTimeDesc(userId);
     }

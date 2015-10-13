@@ -25,4 +25,25 @@
            diskExpiryThreadIntervalSeconds="1"
            memoryStoreEvictionPolicy="LRU"/>
 
+    <cache name="userMeal"
+           timeToLiveSeconds="60"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+           maxElementsOnDisk="10000000"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="userMealBetween"
+           timeToLiveSeconds="60"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+           maxElementsOnDisk="10000000"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+           memoryStoreEvictionPolicy="LRU"/>
+
+
 </ehcache>
