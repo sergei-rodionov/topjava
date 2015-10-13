@@ -7,7 +7,6 @@ import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -23,20 +22,24 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.Profiles.DATAJPA;
-import static ru.javawebinar.topjava.Profiles.POSTGRES;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
+
 @ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-app.xml", "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles({POSTGRES, DATAJPA })
-public class UserMealServiceTest {
+//@ActiveProfiles({POSTGRES, DATAJPA })
+public abstract class UserMealServiceTest {
     private static final LoggerWrapper LOG = LoggerWrapper.get(UserMealServiceTest.class);
+
+    public UserMealServiceTest() {
+        System.out.println("==================================================");
+        System.out.println("RUN TEST CLASS: "+this.getClass().getSimpleName());
+        System.out.println("==================================================");
+    }
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
