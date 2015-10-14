@@ -18,6 +18,8 @@ public interface UserService {
 
     public User get(int id) throws NotFoundException;
 
+    public User getFull(int id) throws NotFoundException;
+
     Collection<User> getAll();
 
     public User getByEmail(String email) throws NotFoundException;

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -20,6 +22,9 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
     @Autowired
     private ProxyUserRepository proxy;
 
+    @Autowired
+    private ProxyUserMealRepository proxyMeal;
+
     @Override
     public User save(User user) {
         return proxy.save(user);
@@ -33,6 +38,14 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         return proxy.findOne(id);
+    }
+
+    @Override
+    public User getFull(int id) {
+        User user = get(id);
+        Collection<UserMeal> meals = proxyMeal.findAllByUserIdOrderByDateTimeDesc(id);
+        user.setMeals(meals);
+        return user;
     }
 
     @Override

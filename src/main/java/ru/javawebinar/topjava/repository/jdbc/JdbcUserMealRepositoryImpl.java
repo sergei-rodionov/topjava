@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,10 +9,12 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -50,6 +53,15 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
             return userMeal;
         }
     };
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Profile(Profiles.JDBC)
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -102,21 +114,25 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public UserMeal getFull(int id, int userId) {
-        List<UserMeal> userMeals = jdbcTemplate.query(
-                "SELECT meals.id AS meals_id," +
-                        "meals.date_time AS meals_date_time," +
-                        "meals.description AS meals_description ," +
-                        "meals.calories AS meals_calories," +
-                        "users.id AS users_id," +
-                        "users.name AS users_name," +
-                        "users.email AS users_email," +
-                        "users.password AS users_password," +
-                        "user_roles.role AS user_roles_role," +
-                        "users.enabled AS users_enabled," +
-                        "users.calories_per_day AS users_calories_per_day FROM meals LEFT JOIN users ON users.id = meals.user_id " +
-                        "LEFT JOIN user_roles ON users.id = user_roles.user_id " +
-                        "WHERE meals.id = ? AND meals.user_id = ?", ROW_MAPPER_FULL, id, userId);
-        return DataAccessUtils.singleResult(userMeals);
+//        List<UserMeal> userMeals = jdbcTemplate.query(
+//                "SELECT meals.id AS meals_id," +
+//                        "meals.date_time AS meals_date_time," +
+//                        "meals.description AS meals_description ," +
+//                        "meals.calories AS meals_calories," +
+//                        "users.id AS users_id," +
+//                        "users.name AS users_name," +
+//                        "users.email AS users_email," +
+//                        "users.password AS users_password," +
+//                        "user_roles.role AS user_roles_role," +
+//                        "users.enabled AS users_enabled," +
+//                        "users.calories_per_day AS users_calories_per_day FROM meals LEFT JOIN users ON users.id = meals.user_id " +
+//                        "LEFT JOIN user_roles ON users.id = user_roles.user_id " +
+//                        "WHERE meals.id = ? AND meals.user_id = ?", ROW_MAPPER_FULL, id, userId);
+//        return DataAccessUtils.singleResult(userMeals);
+        UserMeal meal = get(id, userId);
+        User user = userRepository.get(userId);
+        meal.setUser(user);
+        return meal;
     }
 
     public List<UserMeal> getAll(int userId) {
@@ -130,4 +146,6 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
                 ROW_MAPPER, userId, Timestamp.valueOf(startDate), Timestamp.valueOf(endDate));
     }
+
+
 }

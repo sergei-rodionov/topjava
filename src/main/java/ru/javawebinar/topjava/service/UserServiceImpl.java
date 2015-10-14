@@ -36,6 +36,10 @@ public class UserServiceImpl implements UserService {
         return ExceptionUtil.check(repository.get(id), id);
     }
 
+    public User getFull(int id) throws NotFoundException {
+        return ExceptionUtil.check(repository.getFull(id), id);
+    }
+
     public User getByEmail(String email) throws NotFoundException {
         Objects.requireNonNull(email, "Email must not be empty");
         return ExceptionUtil.check(repository.getByEmail(email), "email=" + email);

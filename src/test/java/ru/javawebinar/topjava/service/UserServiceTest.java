@@ -36,7 +36,7 @@ public abstract class UserServiceTest {
     public void setUp() throws Exception {
         service.evictCache();
     }
-        
+
     @Test
     public void testSave() throws Exception {
         TestUser tu = new TestUser(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
@@ -64,6 +64,12 @@ public abstract class UserServiceTest {
     @Test
     public void testGet() throws Exception {
         User user = service.get(USER_ID);
+        MATCHER.assertEquals(USER, user);
+    }
+
+    @Test
+    public void testGetFull() throws Exception {
+        User user = service.getFull(USER_ID);
         MATCHER.assertEquals(USER, user);
     }
 

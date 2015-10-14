@@ -52,6 +52,11 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User getFull(int id) {
+        return repository.get(id);
+    }
+
+    @Override
     public Collection<User> getAll() {
         return repository.values();
     }
