@@ -23,6 +23,8 @@ public interface UserService {
     public User getByEmail(String email) throws NotFoundException;
 
     void update(User user) throws NotFoundException;
-    
+
     void evictCache();
+
+    User getWithMeals(int id);
 }
