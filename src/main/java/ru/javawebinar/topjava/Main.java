@@ -28,5 +28,6 @@ public class Main {
         consumer.accept(out);
         System.out.println("End consume");
         System.out.format("Hello Topjava Enterprise!");
+
     }
 }
