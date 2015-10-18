@@ -32,5 +32,8 @@
           p:cacheSeconds="60"
           p:defaultEncoding="UTF-8">
         <property name="basenames" value="file:///#{systemEnvironment['TOPJAVA_ROOT']}/config/messages/app"/>
+
+        <!-- Set browser languge for view -->
+        <property name="fallbackToSystemLocale" value="false" />
     </bean>
 </beans>
