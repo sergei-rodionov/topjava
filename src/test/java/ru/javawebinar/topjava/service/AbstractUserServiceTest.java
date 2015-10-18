@@ -3,9 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.UserTestData.*;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -15,6 +13,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -23,10 +22,11 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     protected UserService service;
 
+
     protected JpaUtil jpaUtil;
 
     @Autowired(required = false)
-    @Profile({Profiles.DATAJPA, Profiles.JPA})
+    //@Profile({Profiles.DATAJPA, Profiles.JPA})
     public void setJpaUtil(JpaUtil jpaUtil) {
         this.jpaUtil = jpaUtil;
     }
@@ -34,7 +34,7 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
     @Before
     public void setUp() throws Exception {
         service.evictCache();
-        if (jpaUtil!=null)
+        if (jpaUtil != null)
             jpaUtil.clear2ndLevelHibernateCache();
     }
 
@@ -77,8 +77,14 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
     public void testGetByEmail() throws Exception {
         User user = service.getByEmail("user@yandex.ru");
         MATCHER.assertEquals(USER, user);
-
     }
+
+    @Test
+    public void testGetByEmailADMIN() throws Exception {
+        User user = service.getByEmail("admin@gmail.com");
+        MATCHER.assertEquals(ADMIN, user);
+    }
+
 
     @Test
     public void testGetAll() throws Exception {
@@ -93,5 +99,12 @@ abstract public class AbstractUserServiceTest extends AbstractServiceTest {
         updated.setCaloriesPerDay(330);
         service.update(updated.asUser());
         MATCHER.assertEquals(updated, service.get(USER_ID));
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testRolesGet() throws Exception {
+        User user = service.get(USER_ID);
+        user.setRoles(EnumSet.of(Role.ROLE_ADMIN));
+        MATCHER.assertEquals(USER, user);
     }
 }
