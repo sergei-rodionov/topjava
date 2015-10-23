@@ -27,7 +27,13 @@ public class ProfileRestController extends AbstractUserController {
         super.delete(LoggedUser.id());
     }
 
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody User user) {
         super.update(user, LoggedUser.id());
+    }
+
+    @RequestMapping(value = "/text", method = RequestMethod.GET)
+    public String testUTF() {
+        return "Русский текст";
     }
 }
