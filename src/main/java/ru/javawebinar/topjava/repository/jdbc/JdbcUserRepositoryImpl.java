@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
  * User: gkislin
  * Date: 26.08.2014
  */
-
+@Transactional(readOnly = true)
 @Repository
 public class JdbcUserRepositoryImpl implements UserRepository {
 
@@ -47,6 +48,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 .usingGeneratedKeyColumns("id");
     }
 
+    @Transactional
     @Override
     public User save(User user) {
         MapSqlParameterSource map = new MapSqlParameterSource()
@@ -72,6 +74,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return user;
     }
 
+    @Transactional
     @Override
     public boolean delete(int id) {
         return jdbcTemplate.update("DELETE FROM users WHERE id=?", id) != 0;
@@ -118,6 +121,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         return users;
     }
 
+    @Transactional
     private void insertRoles(User u) {
         Set<Role> roles = u.getRoles();
         Iterator<Role> iterator = roles.iterator();
@@ -137,6 +141,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 });
     }
 
+    @Transactional
     private void deleteRoles(User u) {
         jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", u.getId());
     }

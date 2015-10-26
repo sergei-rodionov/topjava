@@ -17,6 +17,15 @@ public class UserMealWithExceed {
 
     protected final boolean exceed;
 
+    // constructor for Json deserialization
+    public UserMealWithExceed() {
+        this.id=0;
+        this.dateTime=LocalDateTime.now();
+        this.description="constructor";
+        this.calories=10;
+        this.exceed=false;
+    }
+
     public UserMealWithExceed(LocalDateTime dateTime, String description, int calories, boolean exceed) {
         this(null, dateTime, description, calories, exceed);
     }

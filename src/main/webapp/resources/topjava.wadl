@@ -1,0 +1,156 @@
+<application xmlns="http://wadl.dev.java.net/2009/02">
+    <doc xml:lang="en" title="http://localhost:8080"/>
+    <resources base="http://localhost:8080">
+        <resource path="rest" id="rest">
+            <doc xml:lang="en" title="rest"/>
+            <resource path="meals" id="meals">
+                <doc xml:lang="en" title="meals"/>
+                <resource path="" id="">
+                    <doc xml:lang="en" title=""/>
+                    <method name="GET" id="MealsGetAll">
+                        <doc xml:lang="en" title="MealsGetAll"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="Response"/>
+                        </response>
+                    </method>
+                    <method name="POST" id="MealsCreate">
+                        <doc xml:lang="en" title="MealsCreate"/>
+                        <request/>
+                        <response status="400">
+                            <representation mediaType="text/html;charset=utf-8" element="html"/>
+                        </response>
+                        <response status="201">
+                            <representation mediaType="application/json;charset=UTF-8" element="meal:Response" xmlns:meal="http://localhost/rest/meals/"/>
+                        </response>
+                    </method>
+                    <method name="PUT" id="MealsUpdate">
+                        <doc xml:lang="en" title="MealsUpdate"/>
+                        <request/>
+                        <response status="500">
+                            <representation mediaType="text/html;charset=utf-8" element="html"/>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="100002" id="byID">
+                    <doc xml:lang="en" title="byID"/>
+                    <method name="GET" id="MealsGet(ID)">
+                        <doc xml:lang="en" title="MealsGet(ID)"/>
+                        <request/>
+                        <response status="500">
+                            <representation mediaType="text/html;charset=utf-8" element="html"/>
+                        </response>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="ns:Response" xmlns:ns="http://localhost/rest/meals/100002"/>
+                        </response>
+                    </method>
+                    <method name="DELETE" id="MealsDelete(ID)">
+                        <doc xml:lang="en" title="MealsDelete(ID)"/>
+                        <request>
+                            <representation mediaType="application/json"/>
+                        </request>
+                        <response status="">
+                            <representation mediaType="application/json"/>
+                        </response>
+                        <response status="200">
+                            <representation mediaType="" element="data"/>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="filter/" id="filtered">
+                    <doc xml:lang="en" title="filtered"/>
+                    <param name="startDateTime" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <param name="endDateTime" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <method name="GET" id="MealsFiltered">
+                        <doc xml:lang="en" title="MealsFiltered"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="Response"/>
+                        </response>
+                    </method>
+                </resource>
+            </resource>
+            <resource path="admin/users" id="admin">
+                <doc xml:lang="en" title="admin"/>
+                <resource path="" id="">
+                    <doc xml:lang="en" title=""/>
+                    <method name="GET" id="AdminUsersGetAll">
+                        <doc xml:lang="en" title="AdminUsersGetAll"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="Response"/>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="100000" id="byID">
+                    <doc xml:lang="en" title="byID"/>
+                    <method name="GET" id="AdminUsersGet(ID)">
+                        <doc xml:lang="en" title="AdminUsersGet(ID)"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="ns:Response" xmlns:ns="http://localhost/rest/admin/users/100000"/>
+                        </response>
+                    </method>
+                    <method name="DELETE" id="AdminUsersDelete(ID)">
+                        <doc xml:lang="en" title="AdminUsersDelete(ID)"/>
+                        <request>
+                            <representation mediaType="application/json"/>
+                        </request>
+                        <response status="">
+                            <representation mediaType="application/json"/>
+                        </response>
+                        <response status="200">
+                            <representation mediaType="" element="data"/>
+                            <representation mediaType="" element="data"/>
+                        </response>
+                        <response status="500">
+                            <representation mediaType="text/html;charset=utf-8" element="html"/>
+                        </response>
+                    </method>
+                    <method name="PUT" id="AdminUsersUpdate(ID)">
+                        <doc xml:lang="en" title="AdminUsersUpdate(ID)"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="" element="data"/>
+                        </response>
+                    </method>
+                </resource>
+                <resource path="by" id="byEmail">
+                    <doc xml:lang="en" title="byEmail"/>
+                    <param name="email" type="xs:string" required="false" default="" style="query" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+                    <method name="GET" id="AdminUsersByEmailGet">
+                        <doc xml:lang="en" title="AdminUsersByEmailGet"/>
+                        <request/>
+                        <response status="200">
+                            <representation mediaType="application/json;charset=UTF-8" element="by:Response" xmlns:by="http://localhost/rest/admin/users/by"/>
+                        </response>
+                    </method>
+                </resource>
+            </resource>
+            <resource path="profile/" id="profile">
+                <doc xml:lang="en" title="profile"/>
+                <method name="GET" id="ProfileGet">
+                    <doc xml:lang="en" title="ProfileGet"/>
+                    <request/>
+                    <response status="200">
+                        <representation mediaType="application/json;charset=UTF-8" element="prof:Response" xmlns:prof="http://localhost/rest/profile"/>
+                    </response>
+                </method>
+                <method name="DELETE" id="ProfileDelete">
+                    <doc xml:lang="en" title="ProfileDelete"/>
+                    <request/>
+                </method>
+                <method name="PUT" id="ProfileUpdate">
+                    <doc xml:lang="en" title="ProfileUpdate"/>
+                    <request/>
+                    <response status="500">
+                        <representation mediaType="text/html;charset=utf-8" element="html"/>
+                    </response>
+                    <response status="200">
+                        <representation mediaType="" element="data"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+    </resources>
+</application>
