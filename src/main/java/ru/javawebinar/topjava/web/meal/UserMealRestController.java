@@ -56,7 +56,7 @@ public class UserMealRestController extends AbstractUserMealController {
         super.update(userMeal);
     }
 
-    @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    //@RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 /*    public List<UserMealWithExceed>
     getFiltered(@RequestParam(value = "startDate", required = false, defaultValue = "1900-01-01")
               @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -73,10 +73,11 @@ public class UserMealRestController extends AbstractUserMealController {
         return super.getBetween(startDate,startTime,endDate,endTime);
     }*/
 
+    @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserMealWithExceed>
-    getFiltered(@RequestParam(value = "startDateTime", defaultValue = "1900-01-01T00:00:00")
+    getFiltered(@RequestParam(value = "startDateTime", defaultValue = "1900-01-01 00:00")
               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
-              @RequestParam(value = "endDateTime",  defaultValue = "3000-12-31T23:59:59")
+              @RequestParam(value = "endDateTime",  defaultValue = "3000-12-31 23:59")
               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime){
         return super.getBetween(startDateTime.toLocalDate(),startDateTime.toLocalTime(),
                 endDateTime.toLocalDate(),endDateTime.toLocalTime());

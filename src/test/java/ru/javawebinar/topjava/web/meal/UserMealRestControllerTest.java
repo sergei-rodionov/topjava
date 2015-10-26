@@ -95,8 +95,8 @@ public class UserMealRestControllerTest extends AbstractControllerTest {
         List<UserMealWithExceed> listExpected = UserMealsUtil.getWithExceeded(Arrays.asList(MEAL6, MEAL5, MEAL4), USER.getCaloriesPerDay());
         TestUtil.print(
                 mockMvc.perform(get(REST_URL + "filter")
-                        .param("startDateTime", "2015-05-31T00:00:00")
-                        .param("endDateTime", "3000-12-31T23:59:59")
+                        .param("startDateTime", "2015-05-31 00:00") // conversionService in use!!!
+                        .param("endDateTime", "3000-12-31 23:59")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))

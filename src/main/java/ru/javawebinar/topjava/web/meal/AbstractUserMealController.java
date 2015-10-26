@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.LoggerWrapper;
 import ru.javawebinar.topjava.model.UserMeal;
@@ -22,6 +23,10 @@ public class AbstractUserMealController {
 
     @Autowired
     protected UserMealService service;
+
+    // converter LocalDateTime - String
+    @Autowired
+    private ConversionService conversionService;
 
     public UserMeal get(int id) {
         int userId = LoggedUser.id();
