@@ -102,4 +102,17 @@ public class UserMealRestControllerTest extends AbstractControllerTest {
                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                         .andExpect(MATCHER_WITH_EXCEED.contentListMatcher(listExpected)));
     }
+
+
+    @Test
+    public void testJspUserMealPost() throws Exception {
+        mockMvc.perform(post("/meals")
+                .param("id", "100002")
+                .param("description", "test")
+                .param("calories", "222")
+                .param("dateTime", "2015-05-31T14:00:00")) // дату не конвертил, она в реквесте там ее парсить надо
+                .andExpect(status().is3xxRedirection()); // т.к. у нас редирект при добавлении, а иначе там ошибка
+
+        System.out.println();
+    }
 }
