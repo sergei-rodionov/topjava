@@ -122,41 +122,41 @@
                 url: ajaxUrl,
                 dataSrc: ''
             },
-            "bPaginate": false,
-            "bInfo": false,
+            paging: false,
+            info: false,
             columns: [
                 {
-                    "mData": "name"
+                    data: "name"
                 },
                 {
-                    "mData": "email"
+                    data: "email"
                 },
                 {
-                    "mData": "roles"
+                    data: "roles"
                 },
                 {
-                    "sDefaultContent": "",
-                    "bSortable": false
+                    defaultContent: "",
+                    "orderable": false
                 },
                 {
-                    "mData": "registered"
+                    data: "registered"
                 },
                 {
-                    "sDefaultContent": "",
-                    "bSortable": false
+                    defaultContent: "",
+                    "orderable": false
                 },
                 {
-                    "sDefaultContent": "",
-                    "bSortable": false
+                    defaultContent: "",
+                    "orderable": false
                 }
             ],
-            "aaSorting": [
+            "order": [
                 [
                     0,
                     "asc"
                 ]
             ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            "rowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 var enabledUserOFF = (aData["enabled"]) ? 'btn-default active' : 'btn-primary';
                 // btn-primary - pressed
                 var enabledUserON = (aData["enabled"]) ? 'btn-primary' : 'btn-default active';

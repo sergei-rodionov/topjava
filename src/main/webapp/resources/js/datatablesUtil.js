@@ -70,6 +70,7 @@ function deleteRow(id) {
 }
 
 function updateTable() {
+
     $.ajax({
         type: "GET",
         url: ajaxUrlDB,
@@ -78,7 +79,7 @@ function updateTable() {
         success: function (data) {
             oTable_datatable.fnClearTable();
             $.each(data, function (key, item) {
-                oTable_datatable.fnAddData(item);
+               oTable_datatable.fnAddData(item);
             });
             oTable_datatable.fnDraw();
         }

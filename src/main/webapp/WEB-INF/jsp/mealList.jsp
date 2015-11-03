@@ -56,7 +56,9 @@
                         <th></th>
                     </tr>
                     </thead>
+                    <tbody>
 
+                    </tbody>
                     <%--<c:forEach items="${mealList}" var="meal">
                         <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.UserMealWithExceed"/>
                         <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
@@ -188,38 +190,38 @@
 
         oTable_datatable = $('#datatable');
         oTable_datatable_params = {
-            ajax: {
+            "ajax": {
                 url: ajaxUrlDB,
                 dataSrc: ''
             },
-            "bPaginate": false,
-            "bInfo": false,
-            columns: [
+            "paging": false,
+            "info": false,
+            "columns": [
                 {
-                    "mData": "dateTime"
+                    "data": "dateTime"
                 },
                 {
-                    "mData": "description"
+                    "data": "description"
                 },
                 {
-                    "mData": "calories"
+                    "data": "calories"
                 },
                 {
-                    "sDefaultContent": "",
-                    "bSortable": false
+                    "defaultContent": "",
+                    "orderable": false
                 },
                 {
-                    "sDefaultContent": "",
-                    "bSortable": false
+                    "defaultContent": "",
+                    "orderable": false
                 }
             ],
-            "aaSorting": [
+            "order": [
                 [
                     0,
                     "desc"
                 ]
             ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            "rowCallback" : function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 nRow.setAttribute("id", aData["id"]);
                 if (aData["exceed"]) {
                     $(nRow).addClass("exceeded");
