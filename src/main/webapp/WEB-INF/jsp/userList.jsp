@@ -112,7 +112,9 @@
     var oTable_datatable;
     var oTable_datatable_params;
 
-    //            $(document).ready(function () {
+    $(document).ready(function () {
+       ajaxUrlDB = ajaxUrl;
+    });
     $(function () {
         oTable_datatable = $('#datatable');
         oTable_datatable_params = {
