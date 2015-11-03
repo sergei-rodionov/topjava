@@ -1,23 +1,60 @@
 function makeEditable() {
 
     $('#add').click(function () {
-        $('#id').val(0);
+        $('#editRow input').val('');
+        $('#editRow #id').val(0);
         $('#editRow').modal();
     });
 
-    $('.delete').click(function () {
-        deleteRow($(this).attr("id"));
+    $('#datatable').on("click", ".delete", function () {
+        deleteRow($(this).parent().parent().attr("id"));
+    });
+
+    $('#datatable').on("click", ".edit", function () {
+        editRow($(this).parent().parent().attr("id"));
     });
 
     $('#detailsForm').submit(function () {
-        save();
+        var id = $("#editRow").find("input#id").val();
+        if (id == 0) {
+            save();
+        } else {
+            update(id);
+        }
         return false;
+    });
+
+    $('#datatable').on("click", ".btn-toggle", function () {
+        $(this).find('.btn').toggleClass('active');
+        if ($(this).find('.btn-primary').size() > 0) {
+            $(this).find('.btn').toggleClass('btn-primary');
+        }
+        $(this).find('.btn').toggleClass('btn-default');
+        updateUserActive($(this).parent().parent().attr("id"));
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
 }
+
+function updateUserActive(id) {
+    $.get(ajaxUrl + "active/" + id, function () {
+        updateTable();
+        successNoty('Changed');
+    });
+}
+
+function editRow(id) {
+    var editModal = $('#editRow');
+    $.get(ajaxUrl + id, function (data) {
+        $.each(data, function (key, item) {
+            editModal.find("#" + key).val(item)
+        })
+    });
+    editModal.modal();
+}
+
 
 function deleteRow(id) {
     $.ajax({
@@ -40,13 +77,44 @@ function updateTable() {
     });
 }
 
+function update(id) {
+    var serialized = $('#detailsForm').serializeArray();
+    var s = '';
+    var data = {};
+    for (s in serialized) {
+        data[serialized[s]['name']] = serialized[s]['value']
+    }
+    var o = JSON.stringify(data);
+
+    debugger;
+    $.ajax({
+        type: "PUT",
+        url: ajaxUrl + id,
+        contentType: "application/json",
+        data: o,
+        success: function () {
+            $('#editRow').modal('hide');
+            updateTable();
+            successNoty('Updated');
+        }
+    });
+}
+
 function save() {
-    var form = $('#detailsForm');
+    var serialized = $('#detailsForm').serializeArray();
+    var s = '';
+    var data = {};
+    for (s in serialized) {
+        data[serialized[s]['name']] = serialized[s]['value']
+    }
+    var o = JSON.stringify(data);
+
     debugger;
     $.ajax({
         type: "POST",
         url: ajaxUrl,
-        data: form.serialize(),
+        contentType: "application/json",
+        data: o,
         success: function () {
             $('#editRow').modal('hide');
             updateTable();

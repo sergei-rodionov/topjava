@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
 import java.util.Collection;
+import java.util.EnumSet;
 
 /**
  * User: javawebinar.topjava
@@ -24,17 +25,32 @@ public class AdminAjaxController extends AbstractUserController {
         super.delete(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void update(@RequestParam("id") int id,
-                       @RequestParam("name") String name,
-                       @RequestParam("email") String email,
-                       @RequestParam("password") String password) {
-
-        User user = new User(id, name, email, password, Role.ROLE_USER);
-        if (id == 0) {
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@RequestBody User user) {
+        user.setRoles(EnumSet.of(Role.ROLE_USER));
+        if (user.getId() == 0) {
             super.create(user);
         } else {
-            super.update(user, id);
+            super.update(user, user.getId());
         }
+        System.out.println();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User get(@PathVariable("id") int id) {
+        return super.get(id);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@RequestBody User user, @PathVariable("id") int id) {
+        user.setRoles(super.get(user.getId()).getRoles());
+        super.update(user, id);
+    }
+
+    @RequestMapping(value = "/active/{id}", method = RequestMethod.GET)
+    public void changeActive(@PathVariable("id") int id) {
+        User user = super.get(id);
+        user.setEnabled(!user.isEnabled());
+        super.update(user, id);
     }
 }

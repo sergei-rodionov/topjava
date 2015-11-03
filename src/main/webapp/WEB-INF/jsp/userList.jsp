@@ -30,21 +30,21 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <c:forEach items="${userList}" var="user">
-                        <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
-                        <tr>
-                            <td><c:out value="${user.name}"/></td>
-                            <td><a href="mailto:${user.email}">${user.email}</a></td>
-                            <td>${user.roles}</td>
-                            <td>
-                                <input type="checkbox"
-                                       <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
-                            </td>
-                            <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
-                            <td><a class="btn btn-xs btn-primary edit" id="${user.id}">Edit</a></td>
-                            <td><a class="btn btn-xs btn-danger delete" id="${user.id}">Delete</a></td>
-                        </tr>
-                    </c:forEach>
+                    <%-- <c:forEach items="${userList}" var="user">
+                         <jsp:useBean id="user" scope="page" type="ru.javawebinar.topjava.model.User"/>
+                         <tr>
+                             <td><c:out value="${user.name}"/></td>
+                             <td><a href="mailto:${user.email}">${user.email}</a></td>
+                             <td>${user.roles}</td>
+                             <td>
+                                 <input type="checkbox"
+                                        <c:if test="${user.enabled}">checked</c:if> id="${user.id}"/>
+                             </td>
+                             <td><fmt:formatDate value="${user.registered}" pattern="dd-MMMM-yyyy"/></td>
+                             <td><a class="btn btn-xs btn-primary edit" id="${user.id}">Edit</a></td>
+                             <td><a class="btn btn-xs btn-danger delete" id="${user.id}">Delete</a></td>
+                         </tr>
+                     </c:forEach>--%>
                 </table>
             </div>
         </div>
@@ -90,6 +90,7 @@
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
                             <button type="submit" class="btn btn-primary">Save</button>
+                            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -106,6 +107,7 @@
 <script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
 <script type="text/javascript">
 
+
     var ajaxUrl = 'ajax/admin/users/';
     var oTable_datatable;
     var oTable_datatable_params;
@@ -114,9 +116,13 @@
     $(function () {
         oTable_datatable = $('#datatable');
         oTable_datatable_params = {
+            ajax: {
+                url: ajaxUrl,
+                dataSrc: ''
+            },
             "bPaginate": false,
             "bInfo": false,
-            "aoColumns": [
+            columns: [
                 {
                     "mData": "name"
                 },
@@ -127,7 +133,8 @@
                     "mData": "roles"
                 },
                 {
-                    "mData": "enabled"
+                    "sDefaultContent": "",
+                    "bSortable": false
                 },
                 {
                     "mData": "registered"
@@ -146,7 +153,25 @@
                     0,
                     "asc"
                 ]
-            ]
+            ],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                var enabledUserOFF = (aData["enabled"]) ? 'btn-default active' : 'btn-primary';
+                // btn-primary - pressed
+                var enabledUserON = (aData["enabled"]) ? 'btn-primary' : 'btn-default active';
+
+                nRow.setAttribute("id", aData["id"]);
+                $("td:eq(3)", nRow).html("<div class=\"btn-group btn-toggle\">" +
+                        "<button class=\"btn btn-xs " + enabledUserON + "\">ON</button>" +
+                        "<button class=\"btn btn-xs " + enabledUserOFF + "\">OFF</button></div>");
+
+                var dReg = new Date(aData["registered"]);
+                $("td:eq(4)", nRow).text(dReg.toLocaleDateString() + " " + dReg.toLocaleTimeString());
+
+                var id = aData["id"];
+                $("td:eq(5)", nRow).html("<a class=\"btn btn-xs btn-primary edit\">Update</a>");
+                $("td:eq(6)", nRow).html("<a class=\"btn btn-xs btn-danger delete\">Delete</a>");
+                return nRow;
+            }
         };
 
         oTable_datatable.dataTable(oTable_datatable_params);
