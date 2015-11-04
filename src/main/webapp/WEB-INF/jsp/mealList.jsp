@@ -161,7 +161,7 @@
     });
 
     $('#filterForm').submit(function () {
-        ajaxUrlDB = ajaxUrl+'filter'
+        ajaxUrlDB = ajaxUrl + 'filter'
         updateTable();
 //        $.ajax({
 //            type: "GET",
@@ -189,51 +189,52 @@
     $(function () {
 
         oTable_datatable = $('#datatable');
-        oTable_datatable_params = {
-            "ajax": {
-                url: ajaxUrlDB,
-                dataSrc: ''
-            },
-            "paging": false,
-            "info": false,
-            "columns": [
+        oTable_datatable_params =
                 {
-                    "data": "dateTime"
-                },
-                {
-                    "data": "description"
-                },
-                {
-                    "data": "calories"
-                },
-                {
-                    "defaultContent": "",
-                    "orderable": false
-                },
-                {
-                    "defaultContent": "",
-                    "orderable": false
-                }
-            ],
-            "order": [
-                [
-                    0,
-                    "desc"
-                ]
-            ],
-            "rowCallback" : function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                nRow.setAttribute("id", aData["id"]);
-                if (aData["exceed"]) {
-                    $(nRow).addClass("exceeded");
-                } else {
-                    $(nRow).addClass("normal");
-                }
-                var id = aData["id"];
-                $("td:eq(3)", nRow).html("<a class=\"btn btn-xs btn-primary edit\">Update</a>");
-                $("td:eq(4)", nRow).html("<a class=\"btn btn-xs btn-danger delete\">Delete</a>");
-                return nRow;
-            }
-        };
+                    "ajax": {
+                        url: ajaxUrlDB,
+                        dataSrc: ''
+                    },
+                    "paging": false,
+                    "info": false,
+                    "columns": [
+                        {
+                            "data": "dateTime"
+                        },
+                        {
+                            "data": "description"
+                        },
+                        {
+                            "data": "calories"
+                        },
+                        {
+                            "defaultContent": "",
+                            "orderable": false
+                        },
+                        {
+                            "defaultContent": "",
+                            "orderable": false
+                        }
+                    ],
+                    "order": [
+                        [
+                            0,
+                            "desc"
+                        ]
+                    ],
+                    "rowCallback": function (nRow, aData, iDisplayIndex) {
+                        nRow.setAttribute("id", aData["id"]);
+                        if (aData["exceed"]) {
+                            $(nRow).addClass("exceeded");
+                        } else {
+                            $(nRow).addClass("normal");
+                        }
+                        var id = aData["id"];
+                        $("td:eq(3)", nRow).html("<a class=\"btn btn-xs btn-primary edit\">Update</a>");
+                        $("td:eq(4)", nRow).html("<a class=\"btn btn-xs btn-danger delete\">Delete</a>");
+                        return nRow;
+                    }
+                };
 
         oTable_datatable.dataTable(oTable_datatable_params);
         makeEditable();

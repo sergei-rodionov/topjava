@@ -113,7 +113,7 @@
     var oTable_datatable_params;
 
     $(document).ready(function () {
-       ajaxUrlDB = ajaxUrl;
+        ajaxUrlDB = ajaxUrl;
     });
     $(function () {
         oTable_datatable = $('#datatable');
@@ -156,7 +156,7 @@
                     "asc"
                 ]
             ],
-            "rowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            "rowCallback": function (nRow, aData, iDisplayIndex) {
                 var enabledUserOFF = (aData["enabled"]) ? 'btn-default active' : 'btn-primary';
                 // btn-primary - pressed
                 var enabledUserON = (aData["enabled"]) ? 'btn-primary' : 'btn-default active';
