@@ -1,4 +1,5 @@
 var ajaxUrlDB;
+var oTable_datatable;
 
 function makeEditable() {
 
@@ -70,29 +71,20 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-
     $.ajax({
         type: "GET",
         url: ajaxUrlDB,
         contentType: "application/json",
         data: $('#filterForm').serialize(),
         success: function (data) {
-            oTable_datatable.fnClearTable();
+            oTable_datatable.clear();
             $.each(data, function (key, item) {
-               oTable_datatable.fnAddData(item);
+                oTable_datatable.row.add(item);
             });
-            oTable_datatable.fnDraw();
+            oTable_datatable.draw();
         }
     });
 
-
-    //$.get(ajaxUrl, function (data) {
-    //    oTable_datatable.fnClearTable();
-    //    $.each(data, function (key, item) {
-    //        oTable_datatable.fnAddData(item);
-    //    });
-    //    oTable_datatable.fnDraw();
-    //});
 }
 
 function update(id) {

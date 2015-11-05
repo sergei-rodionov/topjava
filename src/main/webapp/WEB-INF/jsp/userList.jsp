@@ -109,15 +109,13 @@
 
 
     var ajaxUrl = 'ajax/admin/users/';
-    var oTable_datatable;
-    var oTable_datatable_params;
 
     $(document).ready(function () {
         ajaxUrlDB = ajaxUrl;
     });
     $(function () {
-        oTable_datatable = $('#datatable');
-        oTable_datatable_params = {
+        oTable_datatable = $('#datatable').DataTable(
+                {
             ajax: {
                 url: ajaxUrl,
                 dataSrc: ''
@@ -174,9 +172,8 @@
                 $("td:eq(6)", nRow).html("<a class=\"btn btn-xs btn-danger delete\">Delete</a>");
                 return nRow;
             }
-        };
+        });
 
-        oTable_datatable.dataTable(oTable_datatable_params);
         makeEditable();
     });
 </script>

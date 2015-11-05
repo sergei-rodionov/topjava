@@ -163,33 +163,16 @@
     $('#filterForm').submit(function () {
         ajaxUrlDB = ajaxUrl + 'filter'
         updateTable();
-//        $.ajax({
-//            type: "GET",
-//            url: ajaxUrlDB,
-//            contentType: "application/json",
-//            data: $('#filterForm').serialize(),
-//            success: function (data) {
-//                oTable_datatable.fnClearTable();
-//                $.each(data, function (key, item) {
-//                    oTable_datatable.fnAddData(item);
-//                });
-//                oTable_datatable.fnDraw();
-//            }
-//        });
         return false;
     });
 
     var ajaxUrl = 'ajax/meals/';
 
-    var oTable_datatable;
-    var oTable_datatable_params;
     $(document).ready(function () {
         ajaxUrlDB = ajaxUrl;
     });
     $(function () {
-
-        oTable_datatable = $('#datatable');
-        oTable_datatable_params =
+        oTable_datatable = $('#datatable').DataTable(
                 {
                     "ajax": {
                         url: ajaxUrlDB,
@@ -234,9 +217,8 @@
                         $("td:eq(4)", nRow).html("<a class=\"btn btn-xs btn-danger delete\">Delete</a>");
                         return nRow;
                     }
-                };
+                });
 
-        oTable_datatable.dataTable(oTable_datatable_params);
         makeEditable();
     });
 </script>
