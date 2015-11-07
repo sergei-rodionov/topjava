@@ -6,7 +6,7 @@ function makeEditable() {
     });
 
     $('.delete').click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).closest('tr').attr("id"));
     });
 
     $('#detailsForm').submit(function () {
@@ -30,19 +30,31 @@ function deleteRow(id) {
     });
 }
 
-function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        oTable_datatable.fnClearTable();
-        $.each(data, function (key, item) {
-            oTable_datatable.fnAddData(item);
-        });
-        oTable_datatable.fnDraw();
+function enable(chkbox) {
+    var enabled = chkbox.is(":checked");
+    var row = chkbox.closest('tr');
+    row.css("text-decoration", enabled ? "none" : "line-through");
+    $.ajax({
+        url: ajaxUrl + row.attr('id'),
+        type: 'POST',
+        data: 'enabled=' + enabled,
+        success: function () {
+            successNoty(enabled ? 'Enabled' : 'Disabled');
+        }
     });
+}
+
+function updateTableByData(data) {
+    datatableApi.clear();
+    $.each(data, function (key, item) {
+        datatableApi.row.add(item);
+    });
+    datatableApi.draw();
+    init();
 }
 
 function save() {
     var form = $('#detailsForm');
-    debugger;
     $.ajax({
         type: "POST",
         url: ajaxUrl,

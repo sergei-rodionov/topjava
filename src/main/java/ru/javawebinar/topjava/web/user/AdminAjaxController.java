@@ -25,7 +25,7 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void update(@RequestParam("id") int id,
+    public void updateOrCreate(@RequestParam("id") int id,
                        @RequestParam("name") String name,
                        @RequestParam("email") String email,
                        @RequestParam("password") String password) {
@@ -36,5 +36,10 @@ public class AdminAjaxController extends AbstractUserController {
         } else {
             super.update(user, id);
         }
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public void enabled(@PathVariable("id") int id, @RequestParam("enabled") boolean enabled) {
+        super.enable(id, enabled);
     }
 }
