@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.to.UserMealTo;
+import ru.javawebinar.topjava.util.UserMealsUtil;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 
 import java.time.LocalDateTime;
@@ -26,6 +28,7 @@ public class UserMealServiceImpl implements UserMealService {
     }
 
     @Override
+    @Transactional
     public void delete(int id, int userId) {
         ExceptionUtil.check(repository.delete(id, userId), id);
     }
@@ -41,11 +44,21 @@ public class UserMealServiceImpl implements UserMealService {
     }
 
     @Override
+    @Transactional
     public UserMeal update(UserMeal meal, int userId) {
         return ExceptionUtil.check(repository.save(meal, userId), meal.getId());
     }
 
     @Override
+    @Transactional
+    public UserMeal update(UserMealTo mealTo, int userId) {
+        UserMeal userMeal = get(mealTo.getId(), userId);
+        return ExceptionUtil.check(
+                repository.save(UserMealsUtil.updateFromTo(userMeal, mealTo), userId), userMeal.getId());
+    }
+
+    @Override
+    @Transactional
     public UserMeal save(UserMeal meal, int userId) {
         return repository.save(meal, userId);
     }

@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import ru.javawebinar.topjava.model.UserMeal;
+import ru.javawebinar.topjava.to.UserMealTo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public interface UserMealService {
     Collection<UserMeal> getAll(int userId);
 
     UserMeal update(UserMeal meal, int userId);
+
+    UserMeal update(UserMealTo mealTo, int userId);
 
     UserMeal save(UserMeal meal, int userId);
 
