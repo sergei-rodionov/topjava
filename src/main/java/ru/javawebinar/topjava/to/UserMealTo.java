@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -14,6 +15,7 @@ public class UserMealTo {
     protected Integer id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @NotNull(message = "Enter date (format: yyyy-MM-dd HH:mm)")
     protected LocalDateTime dateTime;
 
     @NotEmpty(message = "Enter description")
