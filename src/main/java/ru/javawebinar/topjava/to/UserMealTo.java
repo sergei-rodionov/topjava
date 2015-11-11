@@ -22,12 +22,13 @@ public class UserMealTo {
     protected String description;
 
     @Range(min = 1, max = 3000, message = "Enter 1 to 3000 calories")
-    protected int calories;
+    @NotNull(message = "Enter 1 to 3000 calories")
+    protected Integer calories;
 
     public UserMealTo() {
     }
 
-    public UserMealTo(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public UserMealTo(Integer id, LocalDateTime dateTime, String description, Integer calories) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
@@ -62,7 +63,7 @@ public class UserMealTo {
         this.description = description;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
