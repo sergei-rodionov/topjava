@@ -12,6 +12,14 @@
     <div class="container">
         <div class="navbar-header navbar-brand"><fmt:message key="app.title"/></div>
         <div class="navbar-collapse collapse">
+            <div class="navbar-form navbar-left">
+                <div class="btn-group btn-toggle">
+                    <a href="${pageContext.request.contextPath}login?lang=en"
+                       class="btn ${pageContext.response.locale=='en'?'btn-primary':'btn-default active'}">Eng</a>
+                    <a href="${pageContext.request.contextPath}login?lang=ru"
+                       class="btn ${pageContext.response.locale=='en'?'btn-default active':'btn-primary'}">Rus</a>
+                </div>
+            </div>
             <form:form class="navbar-form navbar-right" role="form" action="spring_security_check" method="post">
                 <div class="form-group">
                     <input type="text" placeholder="Email" class="form-control" name='username'>
@@ -43,7 +51,7 @@
 
         <p>Admin login: <b>admin@gmail.com / admin</b></p>
 
-        <p><a class="btn btn-primary btn-lg" role="button" href="register">Register &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="register"><fmt:message key="app.register"/> &raquo;</a></p>
 
         <p>Technology stack: <a href="http://projects.spring.io/spring-security/">Spring Security</a>,
             <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC</a>,
@@ -70,7 +78,8 @@
 </div>
 <div class="container">
     <div class="lead">
-        &nbsp;&nbsp;&nbsp;Приложение с регистрацией/авторизацией пользователя и интерфейсом на основе ролей (ROLE_USER, ROLE_ADMIN).
+        &nbsp;&nbsp;&nbsp;Приложение с регистрацией/авторизацией пользователя и интерфейсом на основе ролей (ROLE_USER,
+        ROLE_ADMIN).
         Администратор может управлять (редактировать/удалять/создавать) пользователями через UI (будем реализовывать на
         <a href="http://javawebinar.ru/topjava/">вебинаре</a>)
         и по REST интерфейсу с базовой авторизацией. Пользователь может ограниченно редактировать и просматривать свои

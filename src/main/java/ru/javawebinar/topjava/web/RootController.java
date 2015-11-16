@@ -34,7 +34,7 @@ public class RootController extends AbstractUserController {
         return "userList";
     }
 
-    @RequestMapping(value = "/meals",method = RequestMethod.GET)
+    @RequestMapping(value = "/meals", method = RequestMethod.GET)
     public String mealList() {
         return "mealList";
     }

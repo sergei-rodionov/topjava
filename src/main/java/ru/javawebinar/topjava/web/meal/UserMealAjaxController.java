@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.to.UserMealWithExceed;
 import ru.javawebinar.topjava.util.TimeUtil;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
+import java.net.BindException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -38,13 +40,13 @@ public class UserMealAjaxController extends AbstractUserMealController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> updateOrCreate(@Valid UserMeal meal, BindingResult result) {
-//        if (result.hasErrors()) {
-//            // TODO change to exception handler
-//            StringBuilder sb = new StringBuilder();
-//            result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));
-//            return new ResponseEntity<>(sb.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
-//        }
+    public ResponseEntity<String> updateOrCreate(@Valid UserMeal meal , BindingResult result) throws BindException {
+        if (result.hasErrors()) {
+            StringBuilder sb = new StringBuilder();
+            result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));
+            throw new ValidationException(sb.toString());
+            //return new ResponseEntity<>(sb.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         if (meal.getId() == 0) {
             super.create(meal);
         } else {
