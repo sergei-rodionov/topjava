@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="topjava" tagdir="/WEB-INF/tags" %>
 
 <html>
@@ -14,7 +15,16 @@
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
-            <h2>${register ? 'Register new' : userTo.name.concat(' profile')}</h2>
+            <h2>
+                <c:choose>
+                    <c:when test="${register}">
+                        <fmt:message key="app.register.new"/>
+                    </c:when>
+                    <c:otherwise>
+                        ${userTo.name} <fmt:message key="app.profile"/>
+                    </c:otherwise>
+                </c:choose>
+            </h2>
 
             <div class="view-box">
                 <form:form modelAttribute="userTo" class="form-horizontal" method="post"
@@ -28,7 +38,16 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-2 col-xs-10">
-                            <button type="submit" class="btn btn-primary">${register ? 'Add' : 'Update'}</button>
+                            <button type="submit" class="btn btn-primary">
+                                <c:choose>
+                                    <c:when test="${register}">
+                                        <fmt:message key="button.add"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${userTo.name} <fmt:message key="button.update"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </button>
                         </div>
                     </div>
                 </form:form>
